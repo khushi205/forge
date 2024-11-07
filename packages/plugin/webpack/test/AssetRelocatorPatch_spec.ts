@@ -1,19 +1,14 @@
 import http from 'http';
 import path from 'path';
-
 import { spawn } from '@malept/cross-spawn-promise';
 import { expect } from 'chai';
 import { pathExists, readFile } from 'fs-extra';
 import { Configuration, webpack } from 'webpack';
 import which from 'which';
-
 import { WebpackPluginConfig, WebpackPluginEntryPointLocalWindow } from '../src/Config';
 import WebpackConfigGenerator from '../src/WebpackConfig';
 
-type Closeable = {
-  close: () => void;
-};
-
+type Closeable = { close: () => void; };
 let servers: Closeable[] = [];
 
 const nativePathSuffix = 'build/Release/hello_world.node';
@@ -27,42 +22,37 @@ async function asyncWebpack(config: Configuration): Promise<void> {
         reject(err);
         return;
       }
-
       if (stats?.compilation?.errors?.length) {
         reject(stats.compilation.errors);
         return;
       }
-
       if (stats?.compilation?.warnings?.length) {
         reject(stats.compilation.warnings);
         return;
       }
-
       resolve();
     });
   });
 }
 
 /**
- * Webpack dev server doesn't like to exit, outputs logs  so instead we just create a
- * basic server.
+ * Webpack dev server doesn't like to exit, outputs logs,
+ * so instead, we just create a basic server.
  */
 function createSimpleDevServer(rendererOut: string): http.Server {
-  return http
-    .createServer(async (req, res) => {
-      const url = req.url || '';
-      const file = url.endsWith('main_window') ? path.join(url, '/index.html') : url;
-      const fullPath = path.join(rendererOut, file);
-      try {
-        const data = await readFile(fullPath);
-        res.writeHead(200);
-        res.end(data);
-      } catch (err) {
-        res.writeHead(404);
-        res.end(JSON.stringify(err));
-      }
-    })
-    .listen(3000);
+  return http.createServer(async (req, res) => {
+    const url = req.url || '';
+    const file = url.endsWith('main_window') ? path.join(url, '/index.html') : url;
+    const fullPath = path.join(rendererOut, file);
+    try {
+      const data = await readFile(fullPath);
+      res.writeHead(200);
+      res.end(data);
+    } catch (err) {
+      res.writeHead(404);
+      res.end(JSON.stringify(err));
+    }
+  }).listen(3000);
 }
 
 type ExpectNativeModulePathOptions = {
@@ -157,7 +147,7 @@ describe('AssetRelocatorPatch', () => {
         outDir: rendererOut,
         jsPath: path.join(rendererOut, 'main_window/preload.js'),
         nativeModulesString: `__webpack_require__.ab = ${JSON.stringify(rendererOut)} + "/native_modules/"`,
-        nativePathString: `require(__webpack_require__.ab + \\"${nativePathSuffix}\\")`,
+        nativePathString: `require(__webpack_require__.ab + "${nativePathSuffix}")`,
       });
     });
 
@@ -171,7 +161,7 @@ describe('AssetRelocatorPatch', () => {
         outDir: rendererOut,
         jsPath: path.join(rendererOut, 'main_window/index.js'),
         nativeModulesString: `__webpack_require__.ab = ${JSON.stringify(rendererOut)} + "/native_modules/"`,
-        nativePathString: `require(__webpack_require__.ab + \\"${nativePathSuffix}\\")`,
+        nativePathString: `require(__webpack_require__.ab + "${nativePathSuffix}")`,
       });
     });
 
@@ -212,7 +202,7 @@ describe('AssetRelocatorPatch', () => {
       await expectOutputFileToHaveTheCorrectNativeModulePath({
         outDir: rendererOut,
         jsPath: path.join(rendererOut, 'main_window/preload.js'),
-        nativeModulesString: '.ab=require("path").resolve(__dirname,"..")+"/native_modules/"',
+        nativeModulesString: '.ab=require("path").resolve(__dirname, "..")+"/native_modules/"',
         nativePathString: `.ab+"${nativePathSuffix}"`,
       });
     });
@@ -226,7 +216,7 @@ describe('AssetRelocatorPatch', () => {
       await expectOutputFileToHaveTheCorrectNativeModulePath({
         outDir: rendererOut,
         jsPath: path.join(rendererOut, 'main_window/index.js'),
-        nativeModulesString: '.ab=require("path").resolve(__dirname,"..")+"/native_modules/"',
+        nativeModulesString: '.ab=require("path").resolve(__dirname, "..")+"/native_modules/"',
         nativePathString: `.ab+"${nativePathSuffix}"`,
       });
     });
