@@ -1,8 +1,7 @@
-import path from 'path';
-
+import * as path from 'path';
 import { ForgeListrTaskDefinition, InitTemplateOptions } from '@electron-forge/shared-types';
 import { BaseTemplate } from '@electron-forge/template-base';
-import fs from 'fs-extra';
+import * as fs from 'fs-extra';
 
 class ViteTypeScriptTemplate extends BaseTemplate {
   public templateDir = path.resolve(__dirname, '..', 'tmpl');
