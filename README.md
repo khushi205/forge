@@ -79,3 +79,51 @@ If you are interested in reporting/fixing issues and contributing directly to th
 
 Please report bugs or feature requests in our [issue tracker](https://github.com/electron/forge/issues).
 You can find help for debugging your Electron Forge on the [Support page](https://github.com/electron/forge/blob/main/SUPPORT.md), and ask questions in the [official Electron Discord server](https://discord.gg/invite/APGC3k5yaH), where there is a dedicated channel for Electron Forge.
+
+To install Yarn using the terminal, follow these steps based on your operating system:
+
+1. Using npm (Node Package Manager)
+If you already have Node.js and npm installed, you can use npm to install Yarn:
+
+
+npm install --global yarn
+
+2. Using Homebrew (macOS)
+If you are using a macOS system and have Homebrew installed, you can use the following command:
+
+brew install yarn
+
+Note: You don't need to have npm if you're using Homebrew.
+
+3. Using apt (Ubuntu and Debian-based Linux)
+First, configure the Yarn repository and import the GPG key:
+
+curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+
+echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+Then, update the package list and install Yarn:
+
+
+sudo apt update && sudo apt install yarn
+
+Note: If you don't want to install Node.js through apt, you can use the --no-install-recommends flag.
+
+4. Using Chocolatey (Windows)
+If you are on Windows and have Chocolatey installed, use this command:
+
+
+choco install yarn
+
+5. Verifying the Installation
+After installation, you can verify that Yarn is installed and check the version by running:
+
+yarn --version
+
+Let me know if you need assistance with any specific part of the installation process!
+
+
+
+
+
+
+
