@@ -2,7 +2,7 @@ import {
   Application,
   DeclarationReflection,
   DefaultThemeRenderContext,
-  DefaultTheme,
+  DefaultTheme;
   Options,
   JSX,
   PageEvent,
